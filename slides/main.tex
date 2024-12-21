@@ -1,192 +1,239 @@
-\documentclass[10pt,pdf,hyperref={unicode}]{beamer}
-
-\mode<presentation>
-{
-\usetheme{boxes}
+\documentclass{beamer}
 \beamertemplatenavigationsymbolsempty
-
+\usecolortheme{beaver}
+\setbeamertemplate{blocks}[rounded=true, shadow=true]
 \setbeamertemplate{footline}[page number]
-\setbeamersize{text margin left=0.5em, text margin right=0.5em}
-}
-
+%
 \usepackage[utf8]{inputenc}
-\usepackage[english, russian]{babel}
-\usepackage{bm}
-\usepackage{multirow}
-\usepackage{ragged2e}
-\usepackage{indentfirst}
-\usepackage{multicol}
+\usepackage[english,russian]{babel}
+\usepackage{amssymb,amsfonts,amsmath,mathtext}
 \usepackage{subfig}
-\usepackage{amsmath,amssymb}
-\usepackage{enumerate}
-\usepackage{mathtools}
-\usepackage{comment}
-\usepackage{multicol}
-
-\usepackage[all]{xy}
-
-\usepackage{tikz}
-\usetikzlibrary{positioning,arrows}
-
-\tikzstyle{name} = [parameters]
-\definecolor{name}{rgb}{0.5,0.5,0.5}
-
-\usepackage{caption}
-\captionsetup{skip=0pt,belowskip=0pt}
-
-\newtheorem{rustheorem}{Теорема}
-\newtheorem{russtatement}{Утверждение}
-\newtheorem{rusdefinition}{Определение}
-
-% colors
-\definecolor{darkgreen}{rgb}{0.0, 0.2, 0.13}
-\definecolor{darkcyan}{rgb}{0.0, 0.55, 0.55}
-
-\AtBeginEnvironment{figure}{\setcounter{subfigure}{0}}
-
-\captionsetup[subfloat]{labelformat=empty}
+\usepackage[all]{xy} % xy package for diagrams
+\usepackage{array}
+\usepackage{multicol}% many columns in slide
+\usepackage{hyperref}% urls
+\usepackage{hhline}%tables
+\usepackage{ dsfont }
+% Your figures are here:
+\graphicspath{ {fig/} {../fig/} }
 
 %----------------------------------------------------------------------------------------------------------
-
-\title[Пример слайдов по работе]{Пример слайдов по работе \\ курса}
-\author{И.\,О.\,Фамилия}
-
-\institute[]{Московский физико-технический институт}
-\date[2022]{\small 10\;февраля\;2022\,г.}
-
-%---------------------------------------------------------------------------------------------------------
+\title[\hbox to 56mm{Попарное расстояние}]{Выбор прогностических моделей в римановых фазовых пространствах}
+\author[Эйнуллаев]{Алтай Эйнуллаев Эльшан оглы}
+\institute{Московский физико-технический институт}
+\date{\footnotesize
+\par\smallskip\emph{Научный руководитель:} д.ф-м.н. Стрижов Вадим Викторович
+\par\bigskip\small 2024}
+%----------------------------------------------------------------------------------------------------------
 \begin{document}
-
+%----------------------------------------------------------------------------------------------------------
 \begin{frame}
-\titlepage
+\thispagestyle{empty}
+\maketitle
 \end{frame}
+%-----------------------------------------------------------------------------------------------------
+\begin{frame}{Выбор прогностических моделей в римановых фазовых пространствах}
 
+\small
+%\begin{block}{Решается задача}
+\textbf{Мотивация}
+
+Матрицы ковариации многомерных временных рядов лежат в римановом пространстве SPD матриц. Свойства этого пространства используются\footnote{Classification of covariance matrices using a Riemannian-based kernel for BCI applications, Alexandre Barachant et al., \textit{Neurocomputing}, 2013} для решения задачи классификации многомерных временных рядов, представляющих собой. 
+
+\textbf{Проблема}
+
+В отличие от задачи классификации, задачу прогнозирования нельзя решить в пространстве матриц ковариации, т.к. требуется прогнозировать исходные временные ряды.
+
+\textbf{Предлагаемый подход}
+
+Рассматривать векторное представление матриц ковариации как описание взаимосвязи фазовах траекторий многомерных временных рядов и использовать эту информацию для улучшения качества прогноза.
+%\end{block}
+\end{frame}
 %----------------------------------------------------------------------------------------------------------
-\section{Слайд об исследованиях}
-\begin{frame}{Слайд об исследованиях}
-\bigskip
-Исследуется проблема \ldots.
-\begin{block}{Цель исследования~---}
-предложить метод \ldots.
-\end{block}
-\begin{block}{Требуется предложить}
-\justifying
-\begin{enumerate}[1)]
-\item метод \ldots,
-\item метод \ldots,
-\item метод \ldots.
-\end{enumerate}
-\end{block}
-\begin{block}{Решение}
-Для \ldots.
-\end{block}
+
+\begin{frame}{Матрица ковариации в фазовых пространствах}
+\small
+Ставится задача прогнозирования многомерного временного ряда $\mathbf{x}_t = [x_{1t}, \ldots, x_{nt}]^{\text{T}}$. Каждому временному ряду ставится в соответствие фазовое пространство $Y$ векторов задержек $\mathbf{y}_t = [x_{t - L + 1}, \ldots, x_{t}]^{\text{T}}$ размерности $L$. Матрица ковариации в каждый момент времени:
+
+\begin{equation*}
+    \mathbf{C}_t = \dfrac{1}{L - 1}\mathbf{X}_t\mathbf{X}_t^{\text{T}},
+\end{equation*}
+
+где $\mathbf{X}_t = [\mathbf{y}_{1t} \ldots \mathbf{y}_{nt}]^{\text{T}}$.
+
+\begin{figure}[h]
+  \begin{minipage}{0.4\textwidth}
+    \includegraphics[width=\linewidth]{phase_trajectory.png}
+  
+  \end{minipage}\hfill
+  \caption*{Точкам фазовых траекторий $\mathbf{y}_{1t}, \mathbf{y}_{2t}$ ставится в соответствие матрица ковариации $\mathbf{C}_t$.}
+\end{figure}
 \end{frame}
-
-%---------------------------------------------------------------------------------------------------------
-\section{Постановка задачи \ldots}
-\begin{frame}{Постановка задачи \ldots}
-Заданы
-\begin{enumerate}[1)]
-    \item признаки \ldots,
-    \item целевая переменная \ldots,
-    \item \ldots.
-\end{enumerate}
-
-\ldots
-
-\bigskip
-
-Требуется выбрать модель \ldots из множества
-\[
-	\mathfrak{G} = \left\{\mathbf{g}| \mathbf{g}:\mathbb{R}^{n} \to \mathbb{Y}^\prime\right\}.
-\]
-Оптимизационная задача \ldots:
-\[
-	\mathbf{g} = \arg\min_{\mathbf{g} \in \mathfrak{G}} \mathcal{L}\bigr(\ldots\bigr),
-\]
-где $\mathcal{L}$~--- функция ошибки.
-
-\bigskip
-\footnotetext[1]{\textit{Lopez-Paz D., Bottou L., Scholkopf B., Vapnik V.} Unifying distillation and privileged information // ICLR, 2016.}
-\footnotetext[2]{\textit{Hinton G., Vinyals O., Dean J.} Distilling the knowledge in a neural network // NIPS, 2015.}
-\end{frame}
-
 %----------------------------------------------------------------------------------------------------------
-\section{Предложенный метод \ldots}
-\begin{frame}{Предложенный метод \ldots}
-~\\[-1mm]
-Заданы
-\begin{enumerate}[1)]
-	\item \ldots,
-	\item \ldots.
-\end{enumerate}
+\begin{frame}{Пространство SPD матриц}
+\small
 
-\medskip
-Параметрические семейства:
-\[
-\setlength\abovedisplayskip{0pt}
-\mathfrak{F} = \left\{\mathbf{f}| \mathbf{f} = \text{softmax}\bigr(\mathbf{v}\bigr(\mathbf{x}\bigr)/T\bigr), \quad \mathbf{v}: \mathbb{R}^{n} \to \mathbb{R}^K \right\},
-\]
-\[
-\mathfrak{G} = \left\{\mathbf{g}| \mathbf{g} = \text{softmax}\bigr(\mathbf{z}\bigr(\mathbf{x}\bigr)/T\bigr), \quad \mathbf{z}: \mathbb{R}^n \to \mathbb{R}^K \right\},
-\]
-где~\ldots.
+Пусть \[S(n) = \{\mathbf{S} \in M(n), \mathbf{S}^{\text{T}} = \mathbf{S}\}\] -- пространство всех $n \times n$ симметричных матриц в пространстве квадратных вещественных матриц $M(n)$ и \[P(n) = \{\mathbf{C} \in S(n), \mathbf{u}^{\text{T}}\mathbf{C}\mathbf{u} > 0, \forall \mathbf{u} \in \mathds{R}\}.\]
+Пространство SPD матриц $P(n)$ -- гладкое многообразие $\mathcal{M}$. Касательное пространство к $P(n)$ в $\mathbf{C}$ -- векторное пространство $T_{\mathbf{C}} \subset S(n)$.
 
-\medskip
-Функция ошибки
-\[
-\setlength\abovedisplayskip{0pt}
-\begin{aligned}
-   \mathcal{L}\bigr(\mathbf{g}\bigr) = &-\sum_{i=1}^{m}\underbrace{{\sum_{k=1}^{K}y^k_i\log\mathbf{g}\bigr(\mathbf{x}_i\bigr)\bigr|_{T=1}}}_{\text{исходная функция потерь}}- \sum_{i=1}^{m}\underbrace{{\sum_{k=1}^{K}\mathbf{f}\bigr(\mathbf{x}_i\bigr)\bigr|_{T=T_0}\log\mathbf{g}\bigr(\mathbf{x}_i\bigr)\bigr|_{T=T_0}}}_{\text{слагаемое дистилляции}},
-\end{aligned}
-\setlength\belowdisplayskip{0pt}
-\]
-где~\ldots.
 
-Оптимальная модель выбирается из класса,
-$\hat{\mathbf{g}} = \arg\min\limits_{\mathbf{g} \in \mathfrak{G}_{\text{cl}}} \mathcal{L}\bigr(\mathbf{g}\bigr).$
 \end{frame}
-
 %----------------------------------------------------------------------------------------------------------
-\section{Анализ предложенного метода \ldots}
-\begin{frame}{Анализ предложенного метода \ldots}
-\justifying
+\begin{frame}{Метрика и среднее в пр-ве $P(n)$}
 
-На графике показана зависимость значения параметров$w_i$ в зависимости от параметра~$l_1$-регуляризации~$C$.
-\begin{figure}[h!]
-\includegraphics[width=0.45\textwidth]{../figures/log_reg_cs_exp.eps}
-\includegraphics[width=0.45\textwidth]{../figures/log_reg_cs_exp.eps}
+\small
+
+Скалярное произведение в касательном пространстве:
+
+\begin{equation*}
+    \langle \mathbf{S}_1, \mathbf{S}_2 \rangle_{\mathbf{C}} = \text{tr}(\mathbf{S}_1\mathbf{C}^{-1}\mathbf{S}_2\mathbf{C}^{-1}).
+\end{equation*}
+
+Кратчайшая линия $\mathbf{\Gamma}(t) : [0, 1] \rightarrow P(n)$, соединяющая две точки многообразия называется геодезической линией и расстояние между ними равно ее длине $l(\mathbf{\Gamma}(t))$. Таким образом, геодезическое расстояние:
+
+\begin{equation*}
+    \delta(\mathbf{C}_1, \mathbf{C}_2) = \|\log (\mathbf{C}_1^{-1}\mathbf{C}_2)\|_F = \left(\sum\limits_{i = 1}^n \log ^2 \lambda_i\right)^{1/2},
+\end{equation*}
+
+где $\lambda_i$, $i = 1, \ldots, n$ -- собственные числа матрицы $\mathbf{C}_1^{-1}\mathbf{C}_2$.
+
+Среднее SPD матриц, соответствующее $\delta$:
+
+\begin{equation*}
+    G(\mathbf{C}_1, \ldots, \mathbf{C}_I) = \arg \min \limits_{\mathbf{C} \in P(n)} \sum\limits_{i = 1}^I \delta(\mathbf{C}_i, \mathbf{C}).
+\end{equation*}
+
+\end{frame}
+%----------------------------------------------------------------------------------------------------------
+\begin{frame}{Переход в касательное пространство $T_{\mathbf{C}}$}
+
+\small
+
+Для точки $\mathbf{C} \in P(n)$, определим касательное пространство $T_{\mathbf{C}}$. Каждый касательный вектор $\mathbf{S}_i$ является производной в $t = 0$ геодезической линии $\mathbf{\Gamma}_i(t)$ между $\mathbf{C}$ и экспоненциальным отображением $\mathbf{C}_i = \text{Exp}_{\mathbf{C}}(\mathbf{S}_i)$, определенным следующим образом:
+
+\begin{equation*}
+    \mathbf{C}_i = \text{Exp}_{\mathbf{C}}(\mathbf{S}_i) = \mathbf{C}^{\frac12} \exp( \mathbf{C}^{-\frac12}\mathbf{S}_i\mathbf{C}^{-\frac12})\mathbf{C}^{\frac12}.
+\end{equation*}
+
+Обратное отображение:
+
+\begin{equation*}
+    \mathbf{S}_i = \text{Log}_{\mathbf{C}}(\mathbf{C}_i) = \mathbf{C}^{\frac12} \log( \mathbf{C}^{-\frac12}\mathbf{C}_i\mathbf{C}^{-\frac12})\mathbf{C}^{\frac12}.
+\end{equation*}
+
+\begin{figure}[h]
+  \begin{minipage}{0.5\textwidth}
+    \includegraphics[width=\linewidth]{explogmap.jpg}
+  
+  \end{minipage}\hfill
+  \caption*{Касательное пространство в точке $\mathbf{C}$, $\mathbf{S}_i$ -- касательный вектор в $\mathbf{C}$, $\gamma_i(t)$ -- геодезическая линия, соединяющая $\mathbf{C}$, $\mathbf{C}_i$ в $P(n)$.}
 \end{figure}
 
-С увеличением параметра регуляризации~$C$ число ненулевых параметров~$w_i$ уменьшается.
-
 \end{frame}
 
 %----------------------------------------------------------------------------------------------------------
-\section{Выводы}
-\begin{frame}{Выводы}
-\justifying
-	\begin{enumerate}
-	\justifying
-	    \item Предложен \ldots.
-        \item Доказаны теоремы \ldots, 
-        \begin{itemize}
-            \item[---] \ldots,
-            \item[---] \ldots.
-        \end{itemize}
-        \item Предложен метод \ldots
-        \begin{itemize}
-            \item[---] \ldots,
-            \item[---] \ldots.
-        \end{itemize}
-        \item Предложены методы \ldots
-        \begin{itemize}
-            \item[---] \ldots,
-            \item[---] \ldots.
-        \end{itemize}
-        \item Предложена вероятностная интерпретации \ldots.
-	\end{enumerate}
+\begin{frame}{Построение прогностической модели}
+
+Требуется выбрать две модели $f$, $h$:
+
+\begin{equation*}
+    \mathbf{x}_t \xrightarrow{f} \hat{\mathbf{x}}_{t+1},
+\end{equation*}
+
+\begin{equation*}
+    \mathbf{x}_t \xrightarrow{g} \mathbf{S}_{t} \xrightarrow{h} \hat{\mathbf{S}}_{t + 1},
+\end{equation*}
+
+где $f$ -- модель прогнозирования временного ряда в фазовом пространстве, $g$ -- отображение, ставящее в соответствие временному ряду представление матрицы ковариации в касательном пространстве $\mathbf{S}_t$, $h$ -- модель прогнозирования $\hat{\mathbf{S}}_{t + 1}$ в касательном пространстве. Для улучшение прогноза $f$ строится мультимодель:
+
+\begin{equation*}
+    \hat{\mathbf{x}}_{t + 1} = F(\hat{\mathbf{x}}_{t + 1}, \hat{\mathbf{S}}_{t + 1}) = F(f(\mathbf{x}_t), h(g(\mathbf{x}_t))).
+\end{equation*}
+
 \end{frame}
 %----------------------------------------------------------------------------------------------------------
+\begin{frame}{План вычислительного эксперимента}
 
+В силу того, что $\mathbf{S}_t$ описывает взаимосвязь точек фазовых траекторий временных рядов, в качестве $f$ рассматриваются прогностические модели в фазовых пространствах:
+
+\begin{itemize}
+\item[-] Локальные модели прогнозирования,
+\item[-] SSA, tSSA, mSSA.
+\end{itemize}
+
+В качестве $h$ можно рассматривать произвольные модели прогнозирования, например:
+
+\begin{itemize}
+\item[-] LSTM,
+\item[-] SSA, tSSA, mSSA.
+\end{itemize}
+
+В качестве $F$ рассматриваются:
+
+\begin{itemize}
+\item[-] Линейная модель,
+\item[-] Двухслойная нейронная сеть.
+\end{itemize}
+
+
+\end{frame}
+%----------------------------------------------------------------------------------------------------------
+\begin{frame}{Результаты}
+\begin{itemize}
+\item[-] $f$ -- локальная модель, усреднение $k = 20$ соседей
+\item[-] $h$ -- $I$, тождественное преобразование
+\item[-] $F$ -- линейная регрессия
+\end{itemize}
+
+\begin{figure}[h]
+  \begin{minipage}{0.45\textwidth}
+    \includegraphics[width=\linewidth]{acc_serie_1.png}
+  
+  \end{minipage}\hfill
+  \begin{minipage}{0.45\textwidth}
+    \includegraphics[width=\linewidth]{acc_serie_2.png}
+  
+  \end{minipage}\hfill
+\end{figure}
+
+\begin{figure}[h]
+  \begin{minipage}{0.45\textwidth}
+    \includegraphics[width=\linewidth]{acc_serie_3.png}
+  
+  \end{minipage}\hfill
+  \caption*{Трехмерный ряд акселерометра. MAPE$_{\text{local}}$ $= 0.683$, MAPE$_{\text{multi}}$ $= 0.67$}
+\end{figure}
+
+
+\end{frame}
+%----------------------------------------------------------------------------------------------------------
+\begin{frame}{Дальнейшие исследования}
+\begin{itemize}
+\item[-] Полностью реализовать план эксперимента
+\item[-] Получить условия применимости метода
+\item[-] Попробовать другие способы подсчета матрицы $\mathbf{C}_t$.
+\end{itemize}
+
+
+\end{frame}
+%----------------------------------------------------------------------------------------------------------
+\end{document} 
+\end{frame}
+%-----------------------------------------------------------------------------------------------------
+
+
+\end{frame}
+%----------------------------------------------------------------------------------------------------------
+\begin{frame}{���������� ������}
+\end{frame}
+%----------------------------------------------------------------------------------------------------------
+\begin{frame}{�������}
+\end{frame}
+%----------------------------------------------------------------------------------------------------------
+\begin{frame}{�������������� �����������}
+\end{frame}
+%----------------------------------------------------------------------------------------------------------
+\begin{frame}{����������}
+\end{frame}
+%----------------------------------------------------------------------------------------------------------
 \end{document} 
