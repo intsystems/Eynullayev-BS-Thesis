@@ -1,37 +1,38 @@
 \documentclass{article}
 \usepackage{arxiv}
-
+\usepackage{wrapfig}
+\usepackage{amsmath}
 \usepackage[utf8]{inputenc}
 \usepackage[english, russian]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{url}
 \usepackage{booktabs}
+\usepackage{float}
 \usepackage{amsfonts}
 \usepackage{nicefrac}
 \usepackage{microtype}
 \usepackage{lipsum}
+\usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{natbib}
 \usepackage{doi}
+\usepackage{ dsfont }
+
+\pagestyle{fancy}
+\usepackage{comment}
+
+\title{Выбор прогностических моделей в римановых фазовых пространствах}
 
 
 
-\title{A template for the \emph{arxiv} style}
-
-\author{ David S.~Hippocampus\thanks{Use footnote for providing further
-		information about author (webpage, alternative
-		address)---\emph{not} for acknowledging funding agencies.} \\
-	Department of Computer Science\\
-	Cranberry-Lemon University\\
-	Pittsburgh, PA 15213 \\
-	\texttt{hippo@cs.cranberry-lemon.edu} \\
+\author{ Эйнуллаев Алтай Эльшан оглы\\
+	Кафедра интеллектуальных систем\\
+	\texttt{einullaev.ae@phystech.edu} \\
 	%% examples of more authors
 	\And
-	Elias D.~Striatum \\
-	Department of Electrical Engineering\\
-	Mount-Sheikh University\\
-	Santa Narimana, Levand \\
-	\texttt{stariate@ee.mount-sheikh.edu} \\
+	Вадим Викторович Стрижов \\
+	д. ф-м. н.\\
+	\texttt{strijov@forecsys.ru} \\
 	%% \AND
 	%% Coauthor \\
 	%% Affiliation \\
@@ -63,96 +64,140 @@ pdfkeywords={First keyword, Second keyword, More},
 }
 
 \begin{document}
+
+
+
+
 \maketitle
 
 \begin{abstract}
-	\lipsum[1]
+	Матрицы ковариации многомерных временных рядов лежат в римановом пространстве SPD матриц. Свойства этого пространства используются для решения задач классификации многомерных временных рядов. Проблема с использованием этого же подхода для прогнозирования многомерных временных рядов заключается в том, что в отличие от задач классификации, нет возможности решать задачу в пространстве SPD матриц. Предлагаются прогностические модели, использующие риманову геометрию SPD матриц, и исследуется качество их прогноза в зависимости от свойств прогнозируемых временных рядов.
+
 \end{abstract}
 
 
-\keywords{First keyword \and Second keyword \and More}
+\keywords{SPD матрицы \and Касательное пространство \and tSSA \and Матрица ковариаций}
 
-\section{Introduction}
-\lipsum[2]
-\lipsum[3]
+\section{Введение}
 
-\section{Headings: first level}
-\label{sec:headings}
+Матрицы ковариаций многомерных временных рядов принадлежат гладкому многообразию SPD матриц. Свойства этого пространства \cite{moakher2005differential} могут быть применены для решения различных задач, связанных с многомерными временными рядами. В частности, были предложены методы классификации EEG сигналов, основанные на римановой геометрии пространства SPD матриц \cite{barachant2010riemannian}, \cite{barachant2011multiclass}, \cite{congedo2017riemannian}. Главная идея состоит в том, чтобы перейти в пространство SPD матриц и использовать риманову метрику для решения задачи. Также был разработан метод, в которых матрицы ковариации отображались в касательное пространство, являющееся евклидовым, и в нем классифицировались с помощью известных методов классификации, например SVM. \cite{barachant2013classification}. 
 
-\lipsum[4] See Section \ref{sec:headings}.
+В отличие от классификации, для прогнозирования многомерных временных рядов не разработаны прогностические модели, использующие риманову геометрию матриц ковариации. В первую очередь, это связано с тем, что нельзя решить задачу в пространстве матриц ковариации, т.к. модель должна прогнозировать исходные временные ряды, а не метку, как в задаче классификации. Однако, можно рассматривать векторное представление матриц ковариации как описание взаимосвязи фазовах траекторий многомерных временных рядов и использовать эту информацию для улучшения качества прогноза. 
 
-\subsection{Headings: second level}
-\lipsum[5]
+\section{Постановка задачи}
+
+Ставится задача прогнозирования многомерного временного ряда $\mathbf{x}_t = [x_{1t}, \ldots, x_{nt}]^{\text{T}}$. Каждой компоненте временному ряду можно поставить в соответствие фазовое пространство векторов задержек размерности $L$. Матрица ковариации для $\mathbf{x}_t$ формально определяется следующим образом:
+
 \begin{equation}
-	\xi _{ij}(t)=P(x_{t}=i,x_{t+1}=j|y,v,w;\theta)= {\frac {\alpha _{i}(t)a^{w_t}_{ij}\beta _{j}(t+1)b^{v_{t+1}}_{j}(y_{t+1})}{\sum _{i=1}^{N} \sum _{j=1}^{N} \alpha _{i}(t)a^{w_t}_{ij}\beta _{j}(t+1)b^{v_{t+1}}_{j}(y_{t+1})}}
+    \Sigma = \text{E} (\mathbf{x}_t - \text{E}(\mathbf{x}_t)(\mathbf{x}_t - \text{E}(\mathbf{x}_t))^{\text{T}}.
 \end{equation}
 
-\subsubsection{Headings: third level}
-\lipsum[6]
+Будем использовать выборочую матрицу ковариации, в качестве оценки матрицы ковариации в каждый момент времени:
 
-\paragraph{Paragraph}
-\lipsum[7]
+\begin{equation}
+    \mathbf{P}_t = \dfrac{1}{L - 1}\mathbf{X}_t\mathbf{X}_t^{\text{T}},
+\end{equation}
 
+где $\mathbf{X}_t = [\mathbf{x}_{t - L + 1}, \ldots \mathbf{x}_{t}]$. Таким образом, $\mathbf{P}_t$ описывает взаимосвязь между точками фазовых пространств различных компонент временного ряда.
 
+\subsection{Риманова геометрия}
 
-\section{Examples of citations, figures, tables, references}
-\label{sec:others}
+Введем определения и инструменты римановой геометрии, необходимые для описания предлагаемых прогностических моделей. Определенные выборочные матрицы ковариации принадлежат к некоторому многообразию. 
 
-\subsection{Citations}
-Citations use \verb+natbib+. The documentation may be found at
-\begin{center}
-	\url{http://mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf}
-\end{center}
+\subsubsection{Обозначения}
 
-Here is an example usage of the two main commands (\verb+citet+ and \verb+citep+): Some people thought a thing \citep{kour2014real, hadash2018estimate} but other people thought something else \citep{kour2014fast}. Many people have speculated that if we knew exactly why \citet{kour2014fast} thought this\dots
+Пусть $S(n) = \{\mathbf{S} \in M(n), \mathbf{S}^{\text{T}} = \mathbf{S}\}$ -- пространство всех $n \times n$ симметричных матриц в пространстве квадратных вещественных матриц $M(n)$ и $P(n) = \{\mathbf{P} \in S(n), \mathbf{u}^{\text{T}}\mathbf{P}\mathbf{u} > 0, \forall \mathbf{u} \in \mathds{R}\}$. Для SPD матриц из $P(n)$, матричная экспонента вычисляется с помощью  разложения по собственным значениям матрицы $\mathbf{P}$:
 
-\subsection{Figures}
-\lipsum[10]
-See Figure \ref{fig:fig1}. Here is how you add footnotes. \footnote{Sample of the first footnote.}
-\lipsum[11]
+\begin{equation}
+    \mathbf{P} = \mathbf{U} \, \text{diag}(\sigma_1, \ldots, \sigma_n) \, \mathbf{U}^\text{T}, 
+\end{equation}
 
-\begin{figure}
-	\centering
-	\includegraphics[width=0.5\textwidth]{../figures/log_reg_cs_exp.eps}
-	\caption{Sample figure caption.}
-	\label{fig:fig1}
+где $\sigma_1 > \sigma_2 > \ldots > \sigma_n > 0$ -- собственные числа и $\mathbf{U}$ -- матрица собственных векторов $\mathbf{P}$. Тогда
+
+\begin{equation}
+    \exp(\mathbf{P}) = \mathbf{U} \, \text{diag}(\exp(\sigma_1), \ldots, \exp(\sigma_n)) \, \mathbf{U}^\text{T}.
+\end{equation}
+
+Обратная операция:
+
+\begin{equation}
+    \log(\mathbf{P}) = \mathbf{U} \, \text{diag}(\log(\sigma_1), \ldots, \log(\sigma_n)) \, \mathbf{U}^\text{T}.
+\end{equation}
+
+Для матриц $\mathbf{P} \in P(n)$, $\mathbf{S} \in S(n)$ справедливы следующие утверждения: $\log(\mathbf{P}) \in S(n)$, $\exp(\mathbf{S}) \in P(n)$. Будем обозначать $\mathbf{P}^{\frac12}$ такую симметричную матрицу $\mathbf{A}$, что $\mathbf{A}\mathbf{A} = \mathbf{P}$. 
+
+\subsubsection{Метрика в римановом пространстве}
+
+Пространство SPD матриц $P(n)$ является гладким многообразием $\mathcal{M}$. Касательное пространство к $P(n)$ в $\mathbf{P}$ -- векторное пространство $T_{\mathbf{P}}$, лежащее в $S(n)$. Размерности многообразия и касательного пространства равны $m = n(n + 1) / 2$. 
+
+В касательном пространстве определено скалярное произведение:
+
+\begin{equation}
+    \langle \mathbf{S}_1, \mathbf{S}_2 \rangle_{\mathbf{P}} = \text{tr}(\mathbf{S}_1\mathbf{P}^{-1}\mathbf{S}_2\mathbf{P}^{-1}).
+\end{equation}
+
+Пусть $\mathbf{\Gamma}(t) : [0, 1] \rightarrow P(n)$ дифференцируемая кривая из $\Gamma(0) = \mathbf{P}_1$ в $\Gamma(1) = \mathbf{P}_2$. Длина кривой $\mathbf{\Gamma}(t)$ равна
+
+\begin{equation}
+    L(\mathbf{\Gamma}(t)) = \int\limits_{0}^1 \|\dot{\mathbf{\Gamma}}(t)\|_{\mathbf{\Gamma}(t)}dt,
+\end{equation}
+
+с нормой, порожденной скалярным произведением, определенным выше. Кривая минимальной длины, соединяющая две точки многообразия называется геодезической линией и риманово расстояние между ними равно ее длине. Таким образом, геодезическое расстояние \cite{moakher2005differential}:
+
+\begin{equation}
+    \delta(\mathbf{P}_1, \mathbf{P}_2) = \|\log (\mathbf{P}_1^{-1}\mathbf{P}_2)\|_F = \left(\sum\limits_{i = 1}^n \log ^2 \lambda_i\right)^{1/2},
+\end{equation}
+
+где $\lambda_i$, $i = 1, \ldots, n$ -- собственные числа матрицы $\mathbf{P}_1^{-1}\mathbf{P}_2$. 
+
+\subsubsection{Касательное пространство}
+
+Для каждой точки $\mathbf{P} \in P(n)$, можем определить касательное пространство, являющееся множеством касательных векторов в $\mathbf{P}$. Каждый касательный вектор $\mathbf{S}_i$ является производной в $t = 0$ геодезической линии $\mathbf{\Gamma}_i(t)$ между $\mathbf{P}$ и экспоненциальным отображением $\mathbf{P}_i = \text{Exp}_{\mathbf{P}}(\mathbf{S}_i)$, определенным следующим образом:
+
+\begin{equation}
+    \mathbf{P}_i = \text{Exp}_{\mathbf{P}}(\mathbf{S}_i) = \mathbf{P}^{\frac12} \exp( \mathbf{P}^{-\frac12}\mathbf{S}_i\mathbf{P}^{-\frac12})\mathbf{P}^{\frac12}.
+\end{equation}
+
+Обратное отображение:
+
+\begin{equation}
+    \mathbf{S}_i = \text{Log}_{\mathbf{P}}(\mathbf{P}_i) = \mathbf{P}^{\frac12} \log( \mathbf{P}^{-\frac12}\mathbf{P}_i\mathbf{P}^{-\frac12})\mathbf{P}^{\frac12}.
+\end{equation}
+
+Таким образом, с помощью логарифмического и экспоненциального отображения можем переходить в касательное пространство и обратно.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{images/expmap.png}
+  \caption{Касательное пространство в точке $\mathbf{P}$, $\mathbf{S}_i$ -- касательный вектор в $\mathbf{P}$, $\Gamma_i(t)$ -- кратчайшая линия, соединяющая $\mathbf{P}$, $\mathbf{P}_i$ в $P(n)$.}
 \end{figure}
 
-\subsection{Tables}
-See awesome Table~\ref{tab:table}.
+\subsection{Прогностическая модель}
 
-The documentation for \verb+booktabs+ (`Publication quality tables in LaTeX') is available from:
-\begin{center}
-	\url{https://www.ctan.org/pkg/booktabs}
-\end{center}
+Требуется выбрать две модели $f$, $h$:
 
+\begin{equation}
+    \mathbf{x}_t \xrightarrow{f} \hat{\mathbf{x}}_{t+1},
+\end{equation}
 
-\begin{table}
-	\caption{Sample table title}
-	\centering
-	\begin{tabular}{lll}
-		\toprule
-		\multicolumn{2}{c}{Part}                   \\
-		\cmidrule(r){1-2}
-		Name     & Description     & Size ($\mu$m) \\
-		\midrule
-		Dendrite & Input terminal  & $\sim$100     \\
-		Axon     & Output terminal & $\sim$10      \\
-		Soma     & Cell body       & up to $10^6$  \\
-		\bottomrule
-	\end{tabular}
-	\label{tab:table}
-\end{table}
+\begin{equation}
+    \mathbf{x}_t \xrightarrow{g} \mathbf{S}_{t} \xrightarrow{h} \hat{\mathbf{S}}_{t + 1},
+\end{equation}
 
-\subsection{Lists}
-\begin{itemize}
-	\item Lorem ipsum dolor sit amet
-	\item consectetur adipiscing elit.
-	\item Aliquam dignissim blandit est, in dictum tortor gravida eget. In ac rutrum magna.
-\end{itemize}
+где $f$ -- модель прогнозирования временного ряда в фазовом пространстве, $g$ -- отображение, ставящее в соответствие временному ряду представление матрицы ковариации в касательном пространстве $\mathbf{S}_t$, $h$ -- модель прогнозирования $\hat{\mathbf{S}}_{t + 1}$ в касательном пространстве. Для улучшение прогноза $f$ строится мультимодель:
+
+\begin{equation}
+    \hat{\mathbf{x}}_{t + 1} = F(\hat{\mathbf{x}}_{t + 1}, \hat{\mathbf{S}}_{t + 1}) = F(f(\mathbf{x}_t), h(g(\mathbf{x}_t))).
+\end{equation}
+
+\section{Вычислительный эксперимент}
+
+\section{Сравнение результатов}
+
+\section{Заключение}
 
 
-\bibliographystyle{unsrtnat}
-\bibliography{references}
+\bibliographystyle{unsrt}
+\bibliography{biblio}
 
 \end{document}
