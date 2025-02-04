@@ -38,7 +38,7 @@
 %\begin{block}{Решается задача}
 \textbf{Мотивация}
 
-Матрицы ковариации многомерных временных рядов лежат в римановом пространстве SPD матриц. Свойства этого пространства используются\footnote{Classification of covariance matrices using a Riemannian-based kernel for BCI applications, Alexandre Barachant et al., \textit{Neurocomputing}, 2013} для решения задачи классификации многомерных временных рядов, представляющих собой. 
+Матрицы ковариации многомерных временных рядов лежат в римановом пространстве SPD матриц. Переходя в это пространство, решают\footnote{Classification of covariance matrices using a Riemannian-based kernel for BCI applications, Alexandre Barachant et al., \textit{Neurocomputing}, 2013} задачу классификации многомерных временных рядов. 
 
 \textbf{Проблема}
 
@@ -174,6 +174,26 @@
 \item[-] Линейная модель,
 \item[-] Двухслойная нейронная сеть.
 \end{itemize}
+
+
+\end{frame}
+%----------------------------------------------------------------------------------------------------------
+\begin{frame}{Разбиение временного ряда для обучения}
+
+\begin{figure}[h]
+  \begin{minipage}{0.7\textwidth}
+    \includegraphics[width=\linewidth]{experiment_setting.png}
+  
+  \end{minipage}\hfill
+  \caption*{\centering
+Схема разделения временного ряда для обучения модели:
+  \begin{itemize}
+      \item[-] history ts -- используется для обучения $f, g$,
+      \item[-] F train -- используется для обучения $F$,
+      \item[-] F test -- оценка качества F
+  \end{itemize} }
+\end{figure}
+
 
 
 \end{frame}
